@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SoulJournal</title>
+
+  <!-- Import Quicksand Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Tailwind with custom font -->
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Quicksand', 'sans-serif'],
+          },
+        }
+      }
+    }
+  </script>
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+    }
+
+    .fade-in {
+      animation: fadeIn 1.5s ease-out forwards;
+      opacity: 0;
+    }
+
+    .fade-in-delayed-1 { animation-delay: 0.5s; }
+    .fade-in-delayed-2 { animation-delay: 1s; }
+    .fade-in-delayed-3 { animation-delay: 1.5s; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .bubble {
+      animation: bubblePop 0.6s ease forwards;
+      opacity: 0;
+    }
+
+    @keyframes bubblePop {
+      0% { opacity: 0; transform: scale(0.8); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+  </style>
+</head>
+<body class="font-sans text-white">
+
+  <!-- Background Video -->
+  <video autoplay muted loop playsinline class="fixed top-0 left-0 w-full h-full object-cover z-0">
+    <source src="856905-uhd_3840_2160_24fps.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
+
+  <!-- Black Tint (sunglasses effect) -->
+  <div class="fixed top-0 left-0 w-full h-full bg-black/40 z-0"></div>
+
+  <!-- Light Overlay + Main Content -->
+  <div class="absolute top-0 left-0 w-full h-full bg-white/60 backdrop-blur-md z-10 flex flex-col items-center justify-center text-center px-6 space-y-8">
+
+    <!-- Welcome Bubble -->
+    <div class="bubble bg-white text-gray-800 px-6 py-4 rounded-2xl shadow-lg max-w-md text-lg font-medium">
+      🌿 Welcome back to SoulJournal. Let’s nurture your mind and spirit today.
+    </div>
+
+    <!-- App Title and Tagline -->
+    <div class="fade-in fade-in-delayed-1">
+      <h1 class="text-5xl md:text-6xl font-bold text-gray-900">SoulJournal</h1>
+      <p class="mt-3 text-lg md:text-xl text-gray-700">
+        A peaceful space to reflect, feel, and grow.
+      </p>
+    </div>
+
+    <!-- Navigation Buttons -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 max-w-4xl w-full mt-6 fade-in fade-in-delayed-2">
+
+      <a href="daily-log.html" class="group bg-white/80 hover:bg-white text-gray-900 font-semibold px-6 py-4 rounded-xl shadow-md transition relative overflow-hidden">
+        ✍️ Daily Log
+        <div class="absolute bottom-1 left-2 text-xs text-gray-500 opacity-0 group-hover:opacity-100 transition">
+          Free write with optional AI support.
+        </div>
+      </a>
+
+      <a href="mood-tracker.html" class="group bg-white/80 hover:bg-white text-gray-900 font-semibold px-6 py-4 rounded-xl shadow-md transition relative overflow-hidden">
+        😊 Mood Tracker
+        <div class="absolute bottom-1 left-2 text-xs text-gray-500 opacity-0 group-hover:opacity-100 transition">
+          Track your emotional rhythms with custom icons.
+        </div>
+      </a>
+
+      <a href="reflections.html" class="group bg-white/80 hover:bg-white text-gray-900 font-semibold px-6 py-4 rounded-xl shadow-md transition relative overflow-hidden">
+        🪞 Reflections
+        <div class="absolute bottom-1 left-2 text-xs text-gray-500 opacity-0 group-hover:opacity-100 transition">
+          AI helps you spot patterns and deeper truths.
+        </div>
+      </a>
+
+      <a href="progress.html" class="group bg-white/80 hover:bg-white text-gray-900 font-semibold px-6 py-4 rounded-xl shadow-md transition relative overflow-hidden">
+        🌱 Small Progress
+        <div class="absolute bottom-1 left-2 text-xs text-gray-500 opacity-0 group-hover:opacity-100 transition">
+          Celebrate your small wins, daily.
+        </div>
+      </a>
+
+      <a href="planning.html" class="group bg-white/80 hover:bg-white text-gray-900 font-semibold px-6 py-4 rounded-xl shadow-md transition relative overflow-hidden">
+        🗓️ Planning
+        <div class="absolute bottom-1 left-2 text-xs text-gray-500 opacity-0 group-hover:opacity-100 transition">
+          Set intentions and break them into steps.
+        </div>
+      </a>
+
+      <a href="channeling.html" class="group bg-white/80 hover:bg-white text-gray-900 font-semibold px-6 py-4 rounded-xl shadow-md transition relative overflow-hidden">
+        ✨ Channeling
+        <div class="absolute bottom-1 left-2 text-xs text-gray-500 opacity-0 group-hover:opacity-100 transition">
+          Talk to guides, DR characters, or inner wisdom.
+        </div>
+      </a>
+
+    </div>
+
+    <!-- Footer -->
+    <div class="mt-8 fade-in fade-in-delayed-3">
+      <p class="text-sm text-gray-600">Your journey is yours. This space is just here to hold it.</p>
+    </div>
+
+  </div>
+
+</body>
+</html>
