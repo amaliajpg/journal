@@ -16,6 +16,18 @@
         extend: {
           fontFamily: {
             sans: ['Quicksand', 'sans-serif'],
+          },
+          boxShadow: {
+            'glow-green': '0 0 20px 8px rgba(144, 238, 144, 0.4)',
+          },
+          keyframes: {
+            floatIn: {
+              '0%': { opacity: 0, transform: 'translateY(40px) scale(0.95)' },
+              '100%': { opacity: 1, transform: 'translateY(0) scale(1)' },
+            }
+          },
+          animation: {
+            floatIn: 'floatIn 1s ease-out forwards',
           }
         }
       }
@@ -47,6 +59,11 @@
     .bubble {
       animation: bubblePop 0.6s ease forwards;
       opacity: 0;
+      transition: box-shadow 0.3s ease;
+    }
+
+    .bubble:hover {
+      box-shadow: 0 6px 24px rgba(0, 0, 0, 0.2);
     }
 
     @keyframes bubblePop {
@@ -60,12 +77,12 @@
     }
 
     @keyframes floatSparkle {
-      0% {
-        transform: translateY(0px) scale(1);
-      }
-      100% {
-        transform: translateY(-5px) scale(1.05);
-      }
+      0% { transform: translateY(0px) scale(1); }
+      100% { transform: translateY(-3px) scale(1.05); }
+    }
+
+    .glow-hover:hover {
+      box-shadow: 0 0 20px 8px rgba(144, 238, 144, 0.4);
     }
   </style>
 </head>
@@ -83,9 +100,10 @@
   <!-- Overlay Content -->
   <div class="absolute top-0 left-0 w-full h-full bg-white/50 dark:bg-black/50 backdrop-blur-sm z-10 flex flex-col items-center justify-center text-center px-4 space-y-8">
 
-    <!-- Welcome Bubble -->
-    <div class="bubble bg-white/80 dark:bg-gray-800 text-gray-900 dark:text-gray-100 px-4 py-3 rounded-2xl shadow max-w-xs sm:max-w-md text-base sm:text-lg font-medium">
-      🌿 Welcome back to Eunoia Seeds. Let’s nurture your mind and spirit today.
+    <!-- Welcome Bubble with Nahida -->
+    <div class="bubble bg-white/80 dark:bg-gray-800 text-gray-900 dark:text-gray-100 px-4 py-3 rounded-2xl max-w-xs sm:max-w-md text-base sm:text-lg font-medium relative">
+      <div class="tenor-gif-embed w-12 h-12 mb-2 mx-auto" data-postid="12264586323403040697" data-share-method="host" data-aspect-ratio="1" data-width="100%"></div>
+      Welcome back to Eunoia Seeds. Let’s nurture your mind and spirit today.
     </div>
 
     <!-- Title + Subtitle -->
@@ -99,51 +117,57 @@
     <!-- Section Buttons -->
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 max-w-lg sm:max-w-4xl w-full px-2 fade-in fade-in-delayed-2">
 
-      <!-- Button Template with Sparkle GIF -->
-      <a href="daily-log.html" class="group bg-white/90 dark:bg-gray-800 hover:bg-white/95 dark:hover:bg-gray-700 text-gray-900 dark:text-gray-100 font-semibold px-6 py-4 rounded-xl shadow-md transition-transform transform duration-300 hover:scale-105 hover:shadow-lg relative overflow-hidden">
+      <!-- Button Template Example (repeat for each) -->
+      <a href="daily-log.html" class="group relative bg-white/90 dark:bg-gray-800 text-gray-900 dark:text-gray-100 font-semibold px-6 py-4 rounded-xl shadow-md transform transition-all duration-300 hover:scale-105 hover:shadow-lg glow-hover overflow-hidden animate-floatIn">
         ✍️ Daily Log
-        <div class="absolute bottom-1 left-2 text-xs text-gray-500 dark:text-gray-400 opacity-0 group-hover:opacity-100 transition">Free write with optional AI help.</div>
-        <div class="sparkle-wrapper opacity-0 group-hover:opacity-100 transition-opacity duration-700 ease-in-out absolute -top-4 -right-4 w-16 h-16 z-20">
+        <div class="text-xs text-center mt-1 text-gray-500 dark:text-gray-400 opacity-0 group-hover:opacity-100 transition duration-300">Free write with optional AI help.</div>
+        <div class="sparkle-wrapper opacity-0 group-hover:opacity-100 transition-opacity duration-500 absolute top-0 right-1 w-10 h-10 z-20">
           <div class="tenor-gif-embed w-full h-full" data-postid="13929901534448049876" data-share-method="host" data-aspect-ratio="1" data-width="100%"></div>
         </div>
       </a>
 
-      <a href="mood-tracker.html" class="group bg-white/90 dark:bg-gray-800 hover:bg-white/95 dark:hover:bg-gray-700 text-gray-900 dark:text-gray-100 font-semibold px-6 py-4 rounded-xl shadow-md transition-transform transform duration-300 hover:scale-105 hover:shadow-lg relative overflow-hidden">
+      <!-- Repeat above <a> block and update href/text for the rest: Mood Tracker, Reflections, etc. -->
+      <!-- Mood Tracker -->
+      <a href="mood-tracker.html" class="group relative bg-white/90 dark:bg-gray-800 text-gray-900 dark:text-gray-100 font-semibold px-6 py-4 rounded-xl shadow-md transform transition-all duration-300 hover:scale-105 hover:shadow-lg glow-hover overflow-hidden animate-floatIn">
         😊 Mood Tracker
-        <div class="absolute bottom-1 left-2 text-xs text-gray-500 dark:text-gray-400 opacity-0 group-hover:opacity-100 transition">Track emotional rhythms visually.</div>
-        <div class="sparkle-wrapper opacity-0 group-hover:opacity-100 transition-opacity duration-700 ease-in-out absolute -top-4 -right-4 w-16 h-16 z-20">
+        <div class="text-xs text-center mt-1 text-gray-500 dark:text-gray-400 opacity-0 group-hover:opacity-100 transition duration-300">Track emotional rhythms visually.</div>
+        <div class="sparkle-wrapper opacity-0 group-hover:opacity-100 transition-opacity duration-500 absolute top-0 right-1 w-10 h-10 z-20">
           <div class="tenor-gif-embed w-full h-full" data-postid="13929901534448049876" data-share-method="host" data-aspect-ratio="1" data-width="100%"></div>
         </div>
       </a>
 
-      <a href="reflections.html" class="group bg-white/90 dark:bg-gray-800 hover:bg-white/95 dark:hover:bg-gray-700 text-gray-900 dark:text-gray-100 font-semibold px-6 py-4 rounded-xl shadow-md transition-transform transform duration-300 hover:scale-105 hover:shadow-lg relative overflow-hidden">
+      <!-- Reflections -->
+      <a href="reflections.html" class="group relative bg-white/90 dark:bg-gray-800 text-gray-900 dark:text-gray-100 font-semibold px-6 py-4 rounded-xl shadow-md transform transition-all duration-300 hover:scale-105 hover:shadow-lg glow-hover overflow-hidden animate-floatIn">
         🪞 Reflections
-        <div class="absolute bottom-1 left-2 text-xs text-gray-500 dark:text-gray-400 opacity-0 group-hover:opacity-100 transition">AI helps uncover deeper themes.</div>
-        <div class="sparkle-wrapper opacity-0 group-hover:opacity-100 transition-opacity duration-700 ease-in-out absolute -top-4 -right-4 w-16 h-16 z-20">
+        <div class="text-xs text-center mt-1 text-gray-500 dark:text-gray-400 opacity-0 group-hover:opacity-100 transition duration-300">AI helps uncover deeper themes.</div>
+        <div class="sparkle-wrapper opacity-0 group-hover:opacity-100 transition-opacity duration-500 absolute top-0 right-1 w-10 h-10 z-20">
           <div class="tenor-gif-embed w-full h-full" data-postid="13929901534448049876" data-share-method="host" data-aspect-ratio="1" data-width="100%"></div>
         </div>
       </a>
 
-      <a href="progress.html" class="group bg-white/90 dark:bg-gray-800 hover:bg-white/95 dark:hover:bg-gray-700 text-gray-900 dark:text-gray-100 font-semibold px-6 py-4 rounded-xl shadow-md transition-transform transform duration-300 hover:scale-105 hover:shadow-lg relative overflow-hidden">
+      <!-- Small Progress -->
+      <a href="progress.html" class="group relative bg-white/90 dark:bg-gray-800 text-gray-900 dark:text-gray-100 font-semibold px-6 py-4 rounded-xl shadow-md transform transition-all duration-300 hover:scale-105 hover:shadow-lg glow-hover overflow-hidden animate-floatIn">
         🌱 Small Progress
-        <div class="absolute bottom-1 left-2 text-xs text-gray-500 dark:text-gray-400 opacity-0 group-hover:opacity-100 transition">Log tiny wins daily.</div>
-        <div class="sparkle-wrapper opacity-0 group-hover:opacity-100 transition-opacity duration-700 ease-in-out absolute -top-4 -right-4 w-16 h-16 z-20">
+        <div class="text-xs text-center mt-1 text-gray-500 dark:text-gray-400 opacity-0 group-hover:opacity-100 transition duration-300">Log tiny wins daily.</div>
+        <div class="sparkle-wrapper opacity-0 group-hover:opacity-100 transition-opacity duration-500 absolute top-0 right-1 w-10 h-10 z-20">
           <div class="tenor-gif-embed w-full h-full" data-postid="13929901534448049876" data-share-method="host" data-aspect-ratio="1" data-width="100%"></div>
         </div>
       </a>
 
-      <a href="planning.html" class="group bg-white/90 dark:bg-gray-800 hover:bg-white/95 dark:hover:bg-gray-700 text-gray-900 dark:text-gray-100 font-semibold px-6 py-4 rounded-xl shadow-md transition-transform transform duration-300 hover:scale-105 hover:shadow-lg relative overflow-hidden">
+      <!-- Planning -->
+      <a href="planning.html" class="group relative bg-white/90 dark:bg-gray-800 text-gray-900 dark:text-gray-100 font-semibold px-6 py-4 rounded-xl shadow-md transform transition-all duration-300 hover:scale-105 hover:shadow-lg glow-hover overflow-hidden animate-floatIn">
         🗓️ Planning
-        <div class="absolute bottom-1 left-2 text-xs text-gray-500 dark:text-gray-400 opacity-0 group-hover:opacity-100 transition">Intentions + clear steps.</div>
-        <div class="sparkle-wrapper opacity-0 group-hover:opacity-100 transition-opacity duration-700 ease-in-out absolute -top-4 -right-4 w-16 h-16 z-20">
+        <div class="text-xs text-center mt-1 text-gray-500 dark:text-gray-400 opacity-0 group-hover:opacity-100 transition duration-300">Intentions + clear steps.</div>
+        <div class="sparkle-wrapper opacity-0 group-hover:opacity-100 transition-opacity duration-500 absolute top-0 right-1 w-10 h-10 z-20">
           <div class="tenor-gif-embed w-full h-full" data-postid="13929901534448049876" data-share-method="host" data-aspect-ratio="1" data-width="100%"></div>
         </div>
       </a>
 
-      <a href="channeling.html" class="group bg-white/90 dark:bg-gray-800 hover:bg-white/95 dark:hover:bg-gray-700 text-gray-900 dark:text-gray-100 font-semibold px-6 py-4 rounded-xl shadow-md transition-transform transform duration-300 hover:scale-105 hover:shadow-lg relative overflow-hidden">
+      <!-- Channeling -->
+      <a href="channeling.html" class="group relative bg-white/90 dark:bg-gray-800 text-gray-900 dark:text-gray-100 font-semibold px-6 py-4 rounded-xl shadow-md transform transition-all duration-300 hover:scale-105 hover:shadow-lg glow-hover overflow-hidden animate-floatIn">
         ✨ Channeling
-        <div class="absolute bottom-1 left-2 text-xs text-gray-500 dark:text-gray-400 opacity-0 group-hover:opacity-100 transition">Talk to guides, characters, or intuition.</div>
-        <div class="sparkle-wrapper opacity-0 group-hover:opacity-100 transition-opacity duration-700 ease-in-out absolute -top-4 -right-4 w-16 h-16 z-20">
+        <div class="text-xs text-center mt-1 text-gray-500 dark:text-gray-400 opacity-0 group-hover:opacity-100 transition duration-300">Talk to guides, characters, or intuition.</div>
+        <div class="sparkle-wrapper opacity-0 group-hover:opacity-100 transition-opacity duration-500 absolute top-0 right-1 w-10 h-10 z-20">
           <div class="tenor-gif-embed w-full h-full" data-postid="13929901534448049876" data-share-method="host" data-aspect-ratio="1" data-width="100%"></div>
         </div>
       </a>
@@ -157,7 +181,7 @@
 
   </div>
 
-  <!-- Tenor Embed Script -->
+  <!-- Tenor Script -->
   <script type="text/javascript" async src="https://tenor.com/embed.js"></script>
 </body>
 </html>
