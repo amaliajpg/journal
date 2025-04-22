@@ -94,18 +94,18 @@
   <script>
     // Firebase Config
     const firebaseConfig = {
-    apiKey: "AIzaSyDW_0oWkmtrvWXJbSfzqEUDji4CZii78Xo",
-    authDomain: "eunoia-daily-log.firebaseapp.com",
-    projectId: "eunoia-daily-log",
-    storageBucket: "eunoia-daily-log.appspot.com",
-    messagingSenderId: "48245889100",
-    appId: "1:48245889100:web:07106c2ed00522a6e2bce9",
-    measurementId: "G-9SS0DJSLQB"
-  };
+      apiKey: "AIzaSyDW_0oWkmtrvWXJbSfzqEUDji4CZii78Xo",
+      authDomain: "eunoia-daily-log.firebaseapp.com",
+      projectId: "eunoia-daily-log",
+      storageBucket: "eunoia-daily-log.appspot.com",
+      messagingSenderId: "48245889100",
+      appId: "1:48245889100:web:07106c2ed00522a6e2bce9",
+      measurementId: "G-9SS0DJSLQB"
+    };
 
-  firebase.initializeApp(firebaseConfig);
-  const db = firebase.firestore();
-  firebase.auth().signInAnonymously();
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+    firebase.auth().signInAnonymously();
 
     const calendarGrid = document.getElementById("calendarGrid");
     const calendar = document.getElementById("calendarWrapper");
@@ -206,4 +206,5 @@
     });
   </script>
 </body>
+</html>
 </html>
