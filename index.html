@@ -4,31 +4,24 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Eunoia Seeds</title>
-
-  <!-- Google Font -->
   <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
 
   <script>
     tailwind.config = {
-      darkMode: 'media',
+      darkMode: 'class',
       theme: {
         extend: {
           fontFamily: {
             sans: ['Quicksand', 'sans-serif'],
           },
           keyframes: {
-            floatIn: {
-              '0%': { opacity: 0, transform: 'translateY(30px) scale(0.95)' },
-              '100%': { opacity: 1, transform: 'translateY(0) scale(1)' },
-            },
             sparkleFloat: {
               '0%, 100%': { transform: 'translateY(0)' },
               '50%': { transform: 'translateY(-5px)' }
             }
           },
           animation: {
-            floatIn: 'floatIn 0.8s ease-out forwards',
             sparkleFloat: 'sparkleFloat 3s ease-in-out infinite'
           }
         }
@@ -37,18 +30,17 @@
   </script>
 
   <style>
-    body, html {
+    html, body {
       margin: 0;
       padding: 0;
       overflow-x: hidden;
     }
-
     .sparkle-wrapper {
       pointer-events: none;
     }
   </style>
 </head>
-<body class="font-sans text-gray-800 dark:text-gray-100">
+<body class="font-sans text-gray-800 dark:text-gray-100 bg-white dark:bg-black">
 
   <!-- Background Video -->
   <video autoplay muted loop playsinline class="fixed top-0 left-0 w-full h-full object-cover z-0">
@@ -60,96 +52,118 @@
   <div class="fixed top-0 left-0 w-full h-full bg-black/30 z-0"></div>
 
   <!-- Main Content -->
-  <div class="absolute inset-0 z-10 flex flex-col items-center justify-center px-4 py-6 space-y-8 text-center pointer-events-auto">
+  <div class="absolute inset-0 z-10 flex flex-col items-center justify-center px-4 py-6 space-y-8 text-center">
 
     <!-- Welcome Bubble -->
-    <div class="bg-white/80 dark:bg-gray-800 text-gray-900 dark:text-gray-100 px-4 py-3 rounded-2xl max-w-md w-full flex items-center space-x-3 text-sm sm:text-base animate-floatIn shadow-md">
+    <div class="bg-white/80 dark:bg-gray-800 text-gray-900 dark:text-gray-100 px-4 py-3 rounded-2xl max-w-md w-full flex items-center space-x-3 text-sm sm:text-base">
       <img src="nahida-genshin-impact.gif" alt="Nahida" class="w-10 h-10 rounded-full object-cover"/>
       <span>Welcome back to Eunoia Seeds. Let’s nurture your mind and spirit today.</span>
     </div>
 
-    <!-- Title + Subtitle -->
-    <div class="animate-floatIn text-center">
-      <h1 class="text-4xl sm:text-5xl font-bold text-white dark:text-white" style="font-family: 'Quicksand', sans-serif;">Eunoia Seeds</h1>
+    <!-- Title -->
+    <div class="text-center">
+      <h1 class="text-4xl sm:text-5xl font-bold text-white dark:text-white">Eunoia Seeds</h1>
       <p class="mt-2 text-sm sm:text-lg text-gray-200 dark:text-gray-300">A peaceful space to reflect, feel, and grow.</p>
     </div>
 
-   <!-- Cards Section -->
-<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 max-w-6xl w-full px-2">
+    <!-- Cards Section -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 max-w-6xl w-full px-2">
+      
+      <!-- Card -->
+      <a href="daily-log.html" class="group relative bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 px-4 py-6 rounded-xl shadow-md transition-all duration-300 transform hover:scale-105 hover:bg-gray-100 dark:hover:bg-gray-700 focus-within:bg-gray-100 dark:focus-within:bg-gray-700">
+        <div class="flex flex-col items-center text-center">
+          <div class="transition-all duration-300 transform group-hover:-translate-y-1 group-focus-within:-translate-y-1 text-lg font-semibold">
+            ✍ Daily Log
+          </div>
+          <div class="transition-all duration-300 opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 group-focus-within:opacity-100 group-focus-within:translate-y-0 text-xs mt-2 text-gray-600 dark:text-gray-400">
+            Free write with optional AI help.
+          </div>
+        </div>
+        <div class="sparkle-wrapper absolute -top-2 -right-2 w-6 h-6 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity duration-500 z-20 animate-sparkleFloat">
+          <img src="pink-cute.gif" alt="sparkle" class="w-full h-full object-contain"/>
+        </div>
+      </a>
 
-  <!-- Card 1 -->
-  <a href="daily-log.html" class="group relative bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 font-semibold px-4 py-3 rounded-xl shadow-md transition-all duration-300 transform hover:scale-105 hover:bg-gray-100 dark:hover:bg-gray-700 focus-within:bg-gray-100 dark:focus-within:bg-gray-700">
-    ✍ Daily Log
-    <div class="transition-all duration-300 opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 group-focus-within:opacity-100 group-focus-within:translate-y-0 text-xs mt-1 text-gray-500 dark:text-gray-400">
-      Free write with optional AI help.
-    </div>
-    <div class="sparkle-wrapper absolute -top-2 -right-2 w-6 h-6 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity duration-500 z-20 animate-sparkleFloat">
-      <img src="pink-cute.gif" alt="sparkle" class="w-full h-full object-contain"/>
-    </div>
-  </a>
+      <!-- Mood Tracker -->
+      <a href="mood-tracker.html" class="group relative bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 px-4 py-6 rounded-xl shadow-md transition-all duration-300 transform hover:scale-105 hover:bg-gray-100 dark:hover:bg-gray-700 focus-within:bg-gray-100 dark:focus-within:bg-gray-700">
+        <div class="flex flex-col items-center text-center">
+          <div class="transition-all duration-300 transform group-hover:-translate-y-1 group-focus-within:-translate-y-1 text-lg font-semibold">
+            😊 Mood Tracker
+          </div>
+          <div class="transition-all duration-300 opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 group-focus-within:opacity-100 group-focus-within:translate-y-0 text-xs mt-2 text-gray-600 dark:text-gray-400">
+            Track emotional rhythms visually.
+          </div>
+        </div>
+        <div class="sparkle-wrapper absolute -top-2 -right-2 w-6 h-6 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity duration-500 z-20 animate-sparkleFloat">
+          <img src="pink-cute.gif" alt="sparkle" class="w-full h-full object-contain"/>
+        </div>
+      </a>
 
-  <!-- Card 2 -->
-  <a href="mood-tracker.html" class="group relative bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 font-semibold px-4 py-3 rounded-xl shadow-md transition-all duration-300 transform hover:scale-105 hover:bg-gray-100 dark:hover:bg-gray-700 focus-within:bg-gray-100 dark:focus-within:bg-gray-700">
-    😊 Mood Tracker
-    <div class="transition-all duration-300 opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 group-focus-within:opacity-100 group-focus-within:translate-y-0 text-xs mt-1 text-gray-500 dark:text-gray-400">
-      Track emotional rhythms visually.
-    </div>
-    <div class="sparkle-wrapper absolute -top-2 -right-2 w-6 h-6 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity duration-500 z-20 animate-sparkleFloat">
-      <img src="pink-cute.gif" alt="sparkle" class="w-full h-full object-contain"/>
-    </div>
-  </a>
+      <!-- Reflections -->
+      <a href="reflections.html" class="group relative bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 px-4 py-6 rounded-xl shadow-md transition-all duration-300 transform hover:scale-105 hover:bg-gray-100 dark:hover:bg-gray-700 focus-within:bg-gray-100 dark:focus-within:bg-gray-700">
+        <div class="flex flex-col items-center text-center">
+          <div class="transition-all duration-300 transform group-hover:-translate-y-1 group-focus-within:-translate-y-1 text-lg font-semibold">
+            🪞 Reflections
+          </div>
+          <div class="transition-all duration-300 opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 group-focus-within:opacity-100 group-focus-within:translate-y-0 text-xs mt-2 text-gray-600 dark:text-gray-400">
+            AI helps uncover deeper themes.
+          </div>
+        </div>
+        <div class="sparkle-wrapper absolute -top-2 -right-2 w-6 h-6 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity duration-500 z-20 animate-sparkleFloat">
+          <img src="pink-cute.gif" alt="sparkle" class="w-full h-full object-contain"/>
+        </div>
+      </a>
 
-  <!-- Card 3 -->
-  <a href="reflections.html" class="group relative bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 font-semibold px-4 py-3 rounded-xl shadow-md transition-all duration-300 transform hover:scale-105 hover:bg-gray-100 dark:hover:bg-gray-700 focus-within:bg-gray-100 dark:focus-within:bg-gray-700">
-    🪞 Reflections
-    <div class="transition-all duration-300 opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 group-focus-within:opacity-100 group-focus-within:translate-y-0 text-xs mt-1 text-gray-500 dark:text-gray-400">
-      AI helps uncover deeper themes.
-    </div>
-    <div class="sparkle-wrapper absolute -top-2 -right-2 w-6 h-6 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity duration-500 z-20 animate-sparkleFloat">
-      <img src="pink-cute.gif" alt="sparkle" class="w-full h-full object-contain"/>
-    </div>
-  </a>
+      <!-- Progress -->
+      <a href="progress.html" class="group relative bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 px-4 py-6 rounded-xl shadow-md transition-all duration-300 transform hover:scale-105 hover:bg-gray-100 dark:hover:bg-gray-700 focus-within:bg-gray-100 dark:focus-within:bg-gray-700">
+        <div class="flex flex-col items-center text-center">
+          <div class="transition-all duration-300 transform group-hover:-translate-y-1 group-focus-within:-translate-y-1 text-lg font-semibold">
+            🌱 Small Progress
+          </div>
+          <div class="transition-all duration-300 opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 group-focus-within:opacity-100 group-focus-within:translate-y-0 text-xs mt-2 text-gray-600 dark:text-gray-400">
+            Log tiny wins daily.
+          </div>
+        </div>
+        <div class="sparkle-wrapper absolute -top-2 -right-2 w-6 h-6 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity duration-500 z-20 animate-sparkleFloat">
+          <img src="pink-cute.gif" alt="sparkle" class="w-full h-full object-contain"/>
+        </div>
+      </a>
 
-  <!-- Card 4 -->
-  <a href="progress.html" class="group relative bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 font-semibold px-4 py-3 rounded-xl shadow-md transition-all duration-300 transform hover:scale-105 hover:bg-gray-100 dark:hover:bg-gray-700 focus-within:bg-gray-100 dark:focus-within:bg-gray-700">
-    🌱 Small Progress
-    <div class="transition-all duration-300 opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 group-focus-within:opacity-100 group-focus-within:translate-y-0 text-xs mt-1 text-gray-500 dark:text-gray-400">
-      Log tiny wins daily.
-    </div>
-    <div class="sparkle-wrapper absolute -top-2 -right-2 w-6 h-6 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity duration-500 z-20 animate-sparkleFloat">
-      <img src="pink-cute.gif" alt="sparkle" class="w-full h-full object-contain"/>
-    </div>
-  </a>
+      <!-- Planning -->
+      <a href="planning.html" class="group relative bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 px-4 py-6 rounded-xl shadow-md transition-all duration-300 transform hover:scale-105 hover:bg-gray-100 dark:hover:bg-gray-700 focus-within:bg-gray-100 dark:focus-within:bg-gray-700">
+        <div class="flex flex-col items-center text-center">
+          <div class="transition-all duration-300 transform group-hover:-translate-y-1 group-focus-within:-translate-y-1 text-lg font-semibold">
+            🗓 Planning
+          </div>
+          <div class="transition-all duration-300 opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 group-focus-within:opacity-100 group-focus-within:translate-y-0 text-xs mt-2 text-gray-600 dark:text-gray-400">
+            Intentions + clear steps.
+          </div>
+        </div>
+        <div class="sparkle-wrapper absolute -top-2 -right-2 w-6 h-6 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity duration-500 z-20 animate-sparkleFloat">
+          <img src="pink-cute.gif" alt="sparkle" class="w-full h-full object-contain"/>
+        </div>
+      </a>
 
-  <!-- Card 5 -->
-  <a href="planning.html" class="group relative bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 font-semibold px-4 py-3 rounded-xl shadow-md transition-all duration-300 transform hover:scale-105 hover:bg-gray-100 dark:hover:bg-gray-700 focus-within:bg-gray-100 dark:focus-within:bg-gray-700">
-    🗓 Planning
-    <div class="transition-all duration-300 opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 group-focus-within:opacity-100 group-focus-within:translate-y-0 text-xs mt-1 text-gray-500 dark:text-gray-400">
-      Intentions + clear steps.
+      <!-- Channeling -->
+      <a href="channeling.html" class="group relative bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 px-4 py-6 rounded-xl shadow-md transition-all duration-300 transform hover:scale-105 hover:bg-gray-100 dark:hover:bg-gray-700 focus-within:bg-gray-100 dark:focus-within:bg-gray-700">
+        <div class="flex flex-col items-center text-center">
+          <div class="transition-all duration-300 transform group-hover:-translate-y-1 group-focus-within:-translate-y-1 text-lg font-semibold">
+            ✨ Channeling
+          </div>
+          <div class="transition-all duration-300 opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 group-focus-within:opacity-100 group-focus-within:translate-y-0 text-xs mt-2 text-gray-600 dark:text-gray-400">
+            Talk to guides, characters, or intuition.
+          </div>
+        </div>
+        <div class="sparkle-wrapper absolute -top-2 -right-2 w-6 h-6 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity duration-500 z-20 animate-sparkleFloat">
+          <img src="pink-cute.gif" alt="sparkle" class="w-full h-full object-contain"/>
+        </div>
+      </a>
     </div>
-    <div class="sparkle-wrapper absolute -top-2 -right-2 w-6 h-6 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity duration-500 z-20 animate-sparkleFloat">
-      <img src="pink-cute.gif" alt="sparkle" class="w-full h-full object-contain"/>
-    </div>
-  </a>
-
-  <!-- Card 6 -->
-  <a href="channeling.html" class="group relative bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 font-semibold px-4 py-3 rounded-xl shadow-md transition-all duration-300 transform hover:scale-105 hover:bg-gray-100 dark:hover:bg-gray-700 focus-within:bg-gray-100 dark:focus-within:bg-gray-700">
-    ✨ Channeling
-    <div class="transition-all duration-300 opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 group-focus-within:opacity-100 group-focus-within:translate-y-0 text-xs mt-1 text-gray-500 dark:text-gray-400">
-      Talk with guides, characters, or intuition.
-    </div>
-    <div class="sparkle-wrapper absolute -top-2 -right-2 w-6 h-6 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity duration-500 z-20 animate-sparkleFloat">
-      <img src="pink-cute.gif" alt="sparkle" class="w-full h-full object-contain"/>
-    </div>
-  </a>
-
-</div>
 
     <!-- Footer -->
     <div class="text-xs sm:text-sm text-gray-300 dark:text-gray-400 pt-4">
       Your journey is yours. This space is here to hold it.
     </div>
-
   </div>
 </body>
 </html>
