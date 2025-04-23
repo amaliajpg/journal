@@ -34,78 +34,92 @@
   <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-auth-compat.js"></script>
 
   <style>
-    body {
-      font-family: 'Quicksand', sans-serif;
-      background: linear-gradient(135deg, #8B5A2B 25%, #6F4F1F 50%, #8B5A2B 75%); /* Simulate wood texture using gradients */
-      background-size: 50px 50px; /* Gives it a wood-like pattern */
-      min-height: 100vh;
-      padding: 2rem;
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
-      flex-direction: column;
-      color: #fff;
+ <style>
+    @layer base {
+      body {
+        background: linear-gradient(45deg, #d19e6a 25%, transparent 25%) -50px 0,
+                    linear-gradient(135deg, #d19e6a 25%, transparent 25%) -50px 0,
+                    linear-gradient(45deg, transparent 75%, #d19e6a 75%) 0 0,
+                    linear-gradient(135deg, transparent 75%, #d19e6a 75%) 0 0;
+        background-size: 100px 100px;
+        background-color: #d19e6a;
+        font-family: 'Quicksand', sans-serif;
+      }
     }
 
     .coffee-cup {
-      position: absolute;
-      top: 30%;
-      left: 10%;
-      width: 80px;
-      height: 80px;
-      background-color: #6F4F1F; /* Coffee mug base color */
-      border-radius: 50%;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-      display: flex;
-      justify-content: center;
-      align-items: center;
       position: relative;
+      width: 120px;
+      height: 100px;
+      margin-bottom: 1rem;
     }
 
-    .coffee-cup:before {
-      content: "";
-      width: 60px;
-      height: 60px;
-      background-color: #D2B48C; /* Cup lid color */
-      border-radius: 50%;
+    .cup {
       position: absolute;
-      top: -30px;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100px;
+      height: 60px;
+      background: #6f4f1f;
+      border-radius: 50% 50% 0 0;
+      border: 5px solid #4e3629;
     }
 
-    .coffee-cup .handle {
-      width: 20px;
-      height: 30px;
-      border: 6px solid #6F4F1F;
-      border-radius: 50%;
+    .handle {
       position: absolute;
       top: 20px;
-      left: 70px;
+      right: -20px;
+      width: 40px;
+      height: 40px;
+      border: 5px solid #4e3629;
+      border-radius: 50%;
     }
 
-    /* Steam rising from the coffee */
     .steam {
       position: absolute;
-      top: -50px;
+      top: -20px;
       left: 50%;
+      transform: translateX(-50%);
       width: 10px;
       height: 10px;
-      background-color: #fff;
+      background: #fff;
       border-radius: 50%;
-      animation: steam 1.5s infinite;
+      animation: steam 3s infinite ease-in-out;
     }
 
     @keyframes steam {
       0% {
-        transform: translateX(-50%) translateY(0);
+        top: -20px;
         opacity: 1;
+        width: 10px;
+        height: 10px;
+      }
+      50% {
+        top: -50px;
+        opacity: 0.5;
+        width: 20px;
+        height: 20px;
       }
       100% {
-        transform: translateX(-50%) translateY(-15px);
+        top: -80px;
         opacity: 0;
+        width: 30px;
+        height: 30px;
       }
     }
-
   </style>
+</head>
+
+<body class="min-h-screen flex flex-col items-center justify-start p-6 space-y-8">
+
+  <!-- Coffee Cup -->
+  <div class="coffee-cup">
+    <div class="cup"></div>
+    <div class="handle"></div>
+    <div class="steam"></div>
+  </div>
+
 </head>
 
 <body class="bg-white dark:bg-black text-gray-900 dark:text-white min-h-screen flex flex-col items-center justify-start p-6 space-y-8">
