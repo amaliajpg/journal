@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Daily Log – Eunoia Seeds</title>
 
-  <!-- TailwindCSS + Google Fonts -->
+  <!-- TailwindCSS + Fonts -->
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
   <script>
@@ -22,22 +22,13 @@
               green: '#cdeac0',
               table: '#fef9f3',
             }
-          },
-          keyframes: {
-            zoomIn: {
-              '0%': { transform: 'scale(1)' },
-              '100%': { transform: 'scale(1.05)' }
-            }
-          },
-          animation: {
-            zoomIn: 'zoomIn 0.5s ease-in-out forwards'
           }
         }
       }
     };
   </script>
 
-  <!-- Firebase SDK -->
+  <!-- Firebase -->
   <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-auth-compat.js"></script>
@@ -45,36 +36,35 @@
   <style>
     body {
       font-family: 'Quicksand', sans-serif;
-      background-color: #fefdf9;
     }
   </style>
 </head>
-<body class="font-sans bg-white dark:bg-black text-gray-900 dark:text-gray-100 min-h-screen">
 
-  <div class="min-h-screen flex flex-col items-center justify-start p-6 space-y-8">
-    <div class="text-center mt-4">
-      <h1 class="text-4xl font-bold">🪴 Daily Log</h1>
-      <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Reflect gently. Log your day with love.</p>
+<body class="bg-white dark:bg-black text-gray-900 dark:text-white min-h-screen flex flex-col items-center justify-start p-6 space-y-8">
+
+  <div class="text-center mt-4">
+    <h1 class="text-4xl font-bold">🪴 Daily Log</h1>
+    <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Reflect gently. Log your day with love.</p>
+  </div>
+
+  <!-- Document Today Button -->
+  <button id="documentToday" class="bg-pastelgreen hover:bg-green-200 text-gray-800 font-semibold py-2 px-6 rounded-xl shadow transition transform hover:scale-105">
+    ✍ Document Today
+  </button>
+
+  <!-- Calendar Component -->
+  <div class="bg-pastel-table dark:bg-gray-800 shadow-lg rounded-3xl p-6 w-full max-w-4xl">
+    <div class="flex items-center justify-between mb-6">
+      <button onclick="prevMonth()" class="text-xl px-3 py-1 rounded hover:bg-gray-200 dark:hover:bg-gray-700">←</button>
+      <h1 id="monthYear" class="text-2xl font-bold"></h1>
+      <button onclick="nextMonth()" class="text-xl px-3 py-1 rounded hover:bg-gray-200 dark:hover:bg-gray-700">→</button>
     </div>
 
-    <!-- Button -->
-    <button id="documentToday" class="bg-pastelgreen hover:bg-green-200 text-gray-800 font-semibold py-2 px-6 rounded-xl shadow transition transform hover:scale-105">
-      ✍ Document Today
-    </button>
-
-    <!-- Calendar -->
-    <div id="calendarWrapper" class="bg-pastel-table dark:bg-gray-900 p-4 rounded-3xl shadow-lg w-full max-w-5xl transition-all duration-700">
-      <div class="grid grid-cols-7 gap-4 text-center text-sm sm:text-base mb-4">
-        <div class="font-semibold text-gray-500 dark:text-gray-400">Sun</div>
-        <div class="font-semibold text-gray-500 dark:text-gray-400">Mon</div>
-        <div class="font-semibold text-gray-500 dark:text-gray-400">Tue</div>
-        <div class="font-semibold text-gray-500 dark:text-gray-400">Wed</div>
-        <div class="font-semibold text-gray-500 dark:text-gray-400">Thu</div>
-        <div class="font-semibold text-gray-500 dark:text-gray-400">Fri</div>
-        <div class="font-semibold text-gray-500 dark:text-gray-400">Sat</div>
-      </div>
-      <div id="calendarGrid" class="grid grid-cols-7 gap-4 text-center text-sm sm:text-base"></div>
+    <div class="grid grid-cols-7 text-center mb-2 text-gray-500 dark:text-gray-400 font-semibold">
+      <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
     </div>
+
+    <div id="calendarGrid" class="grid grid-cols-7 gap-2 text-center"></div>
   </div>
 
   <!-- Modal -->
@@ -92,52 +82,53 @@
   </div>
 
   <script>
+    // Firebase Config
     const firebaseConfig = {
       apiKey: "AIzaSyDW_0oWkmtrvWXJbSfzqEUDji4CZii78Xo",
       authDomain: "eunoia-daily-log.firebaseapp.com",
       projectId: "eunoia-daily-log",
       storageBucket: "eunoia-daily-log.appspot.com",
       messagingSenderId: "48245889100",
-      appId: "1:48245889100:web:07106c2ed00522a6e2bce9",
-      measurementId: "G-9SS0DJSLQB"
+      appId: "1:48245889100:web:07106c2ed00522a6e2bce9"
     };
-
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
     firebase.auth().signInAnonymously();
 
     const calendarGrid = document.getElementById("calendarGrid");
-    const calendar = document.getElementById("calendarWrapper");
-    const docBtn = document.getElementById("documentToday");
+    const monthYear = document.getElementById("monthYear");
     const modal = document.getElementById("modal");
     const modalDate = document.getElementById("modal-date");
     const moodInput = document.getElementById("mood");
     const summaryInput = document.getElementById("summary");
-
-    const today = new Date();
-    const year = today.getFullYear();
-    const month = today.getMonth();
     let selectedDateStr = null;
 
-    function generateCalendar(year, month) {
+    const today = new Date();
+    let currentMonth = today.getMonth();
+    let currentYear = today.getFullYear();
+
+    function renderCalendar(year, month) {
       const firstDay = new Date(year, month, 1).getDay();
       const totalDays = new Date(year, month + 1, 0).getDate();
-      const currentDateStr = today.toISOString().split('T')[0];
+      const currentDateStr = new Date().toISOString().split('T')[0];
 
+      monthYear.textContent = `${new Date(year, month).toLocaleString('default', { month: 'long' })} ${year}`;
       calendarGrid.innerHTML = "";
+
       for (let i = 0; i < firstDay; i++) {
-        calendarGrid.innerHTML += `<div class="h-20"></div>`;
+        calendarGrid.innerHTML += `<div></div>`;
       }
 
       for (let day = 1; day <= totalDays; day++) {
-        const dateStr = `${year}-${(month+1).toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
+        const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
         const isToday = dateStr === currentDateStr;
+
         calendarGrid.innerHTML += `
-          <div id="day-${dateStr}" class="h-20 ${isToday ? 'bg-green-100 dark:bg-green-800 ring-2 ring-green-400' : 'bg-white/70 dark:bg-white/10'} 
-          rounded-xl flex flex-col items-center justify-center shadow hover:shadow-md cursor-pointer" 
-          onclick="openModal('${dateStr}')">
-            <span class="${isToday ? 'font-bold' : 'font-semibold'}">${day}</span>
-            <span class="text-xs truncate" id="mood-${dateStr}"></span>
+          <div id="day-${dateStr}" onclick="openModal('${dateStr}')" 
+            class="rounded-xl py-4 hover:bg-green-100 dark:hover:bg-green-700 cursor-pointer transition-all duration-200
+              ${isToday ? 'bg-green-200 dark:bg-green-800 text-black dark:text-white font-bold shadow' : 'bg-white dark:bg-gray-700 shadow-sm'}">
+            <div>${day}</div>
+            <div class="text-xs" id="mood-${dateStr}"></div>
           </div>`;
       }
     }
@@ -188,18 +179,34 @@
       });
     }
 
-    docBtn.addEventListener("click", () => {
-      calendar.classList.add("animate-zoomIn");
-      const todayStr = today.toISOString().split('T')[0];
+    function prevMonth() {
+      currentMonth--;
+      if (currentMonth < 0) {
+        currentMonth = 11;
+        currentYear--;
+      }
+      renderCalendar(currentYear, currentMonth);
+      loadLogs();
+    }
+
+    function nextMonth() {
+      currentMonth++;
+      if (currentMonth > 11) {
+        currentMonth = 0;
+        currentYear++;
+      }
+      renderCalendar(currentYear, currentMonth);
+      loadLogs();
+    }
+
+    document.getElementById("documentToday").addEventListener("click", () => {
+      const todayStr = new Date().toISOString().split('T')[0];
       openModal(todayStr);
-      setTimeout(() => {
-        calendar.classList.remove("animate-zoomIn");
-      }, 1000);
     });
 
     firebase.auth().onAuthStateChanged(user => {
       if (user) {
-        generateCalendar(year, month);
+        renderCalendar(currentYear, currentMonth);
         loadLogs();
       }
     });
