@@ -213,4 +213,75 @@
       summaryInput.value = '';
 
       const userId = firebase.auth().currentUser.uid;
-      db.collection("users").doc(userId).collection("logs").doc(dateStr).get().
+      db.collection("users").doc(userId).collection("logs").doc(dateStr).get().then(doc => {
+        if (doc.exists) {
+          const data = doc.data();
+          moodInput.value = data.mood || '';
+          summaryInput.value = data.summary || '';
+        }
+      });
+    }
+
+    function closeModal() {
+      modal.classList.add("hidden");
+    }
+
+    async function saveLog() {
+      const mood = moodInput.value;
+      const summary = summaryInput.value;
+      const userId = firebase.auth().currentUser.uid;
+
+      await db.collection("users").doc(userId).collection("logs").doc(selectedDateStr)
+        .set({ mood, summary, timestamp: new Date() });
+
+      document.getElementById(`mood-${selectedDateStr}`).innerText = mood;
+      closeModal();
+    }
+
+    async function loadLogs() {
+      const userId = firebase.auth().currentUser.uid;
+      const snapshot = await db.collection("users").doc(userId).collection("logs").get();
+
+      snapshot.forEach(doc => {
+        const data = doc.data();
+        const moodEl = document.getElementById(`mood-${doc.id}`);
+        if (moodEl) {
+          moodEl.innerText = data.mood;
+        }
+      });
+    }
+
+    function prevMonth() {
+      currentMonth--;
+      if (currentMonth < 0) {
+        currentMonth = 11;
+        currentYear--;
+      }
+      renderCalendar(currentYear, currentMonth);
+      loadLogs();
+    }
+
+    function nextMonth() {
+      currentMonth++;
+      if (currentMonth > 11) {
+        currentMonth = 0;
+        currentYear++;
+      }
+      renderCalendar(currentYear, currentMonth);
+      loadLogs();
+    }
+
+    document.getElementById("documentToday").addEventListener("click", () => {
+      const todayStr = new Date().toISOString().split('T')[0];
+      openModal(todayStr);
+    });
+
+    firebase.auth().onAuthStateChanged(user => {
+      if (user) {
+        renderCalendar(currentYear, currentMonth);
+        loadLogs();
+      }
+    });
+  </script>
+</body>
+</html>
