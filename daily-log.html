@@ -92,7 +92,6 @@
   </div>
 
   <script>
-    // Firebase Config
     const firebaseConfig = {
       apiKey: "AIzaSyDW_0oWkmtrvWXJbSfzqEUDji4CZii78Xo",
       authDomain: "eunoia-daily-log.firebaseapp.com",
@@ -127,11 +126,11 @@
 
       calendarGrid.innerHTML = "";
       for (let i = 0; i < firstDay; i++) {
-        calendarGrid.innerHTML += <div class="h-20"></div>;
+        calendarGrid.innerHTML += `<div class="h-20"></div>`;
       }
 
       for (let day = 1; day <= totalDays; day++) {
-        const dateStr = ${year}-${(month+1).toString().padStart(2, '0')}-${day.toString().padStart(2, '0')};
+        const dateStr = `${year}-${(month+1).toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
         const isToday = dateStr === currentDateStr;
         calendarGrid.innerHTML += `
           <div id="day-${dateStr}" class="h-20 ${isToday ? 'bg-green-100 dark:bg-green-800 ring-2 ring-green-400' : 'bg-white/70 dark:bg-white/10'} 
@@ -146,7 +145,7 @@
     function openModal(dateStr) {
       selectedDateStr = dateStr;
       modal.classList.remove("hidden");
-      modalDate.innerText = Log for ${dateStr};
+      modalDate.innerText = `Log for ${dateStr}`;
       moodInput.value = '';
       summaryInput.value = '';
 
@@ -172,7 +171,7 @@
       await db.collection("users").doc(userId).collection("logs").doc(selectedDateStr)
         .set({ mood, summary, timestamp: new Date() });
 
-      document.getElementById(mood-${selectedDateStr}).innerText = mood;
+      document.getElementById(`mood-${selectedDateStr}`).innerText = mood;
       closeModal();
     }
 
@@ -182,7 +181,7 @@
 
       snapshot.forEach(doc => {
         const data = doc.data();
-        const moodEl = document.getElementById(mood-${doc.id});
+        const moodEl = document.getElementById(`mood-${doc.id}`);
         if (moodEl) {
           moodEl.innerText = data.mood;
         }
