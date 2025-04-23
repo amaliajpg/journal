@@ -34,92 +34,10 @@
   <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-auth-compat.js"></script>
 
   <style>
- <style>
-    @layer base {
-      body {
-        background: linear-gradient(45deg, #d19e6a 25%, transparent 25%) -50px 0,
-                    linear-gradient(135deg, #d19e6a 25%, transparent 25%) -50px 0,
-                    linear-gradient(45deg, transparent 75%, #d19e6a 75%) 0 0,
-                    linear-gradient(135deg, transparent 75%, #d19e6a 75%) 0 0;
-        background-size: 100px 100px;
-        background-color: #d19e6a;
-        font-family: 'Quicksand', sans-serif;
-      }
-    }
-
-    .coffee-cup {
-      position: relative;
-      width: 120px;
-      height: 100px;
-      margin-bottom: 1rem;
-    }
-
-    .cup {
-      position: absolute;
-      bottom: 0;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 100px;
-      height: 60px;
-      background: #6f4f1f;
-      border-radius: 50% 50% 0 0;
-      border: 5px solid #4e3629;
-    }
-
-    .handle {
-      position: absolute;
-      top: 20px;
-      right: -20px;
-      width: 40px;
-      height: 40px;
-      border: 5px solid #4e3629;
-      border-radius: 50%;
-    }
-
-    .steam {
-      position: absolute;
-      top: -20px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 10px;
-      height: 10px;
-      background: #fff;
-      border-radius: 50%;
-      animation: steam 3s infinite ease-in-out;
-    }
-
-    @keyframes steam {
-      0% {
-        top: -20px;
-        opacity: 1;
-        width: 10px;
-        height: 10px;
-      }
-      50% {
-        top: -50px;
-        opacity: 0.5;
-        width: 20px;
-        height: 20px;
-      }
-      100% {
-        top: -80px;
-        opacity: 0;
-        width: 30px;
-        height: 30px;
-      }
+    body {
+      font-family: 'Quicksand', sans-serif;
     }
   </style>
-</head>
-
-<body class="min-h-screen flex flex-col items-center justify-start p-6 space-y-8">
-
-  <!-- Coffee Cup -->
-  <div class="coffee-cup">
-    <div class="cup"></div>
-    <div class="handle"></div>
-    <div class="steam"></div>
-  </div>
-
 </head>
 
 <body class="bg-white dark:bg-black text-gray-900 dark:text-white min-h-screen flex flex-col items-center justify-start p-6 space-y-8">
@@ -127,11 +45,6 @@
   <div class="text-center mt-4">
     <h1 class="text-4xl font-bold">🪴 Daily Log</h1>
     <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Reflect gently. Log your day with love.</p>
-  </div>
-
-  <!-- Coffee cup positioned to the left -->
-  <div class="coffee-cup">
-    <div class="steam"></div>
   </div>
 
   <!-- Document Today Button -->
@@ -199,15 +112,15 @@
       const totalDays = new Date(year, month + 1, 0).getDate();
       const currentDateStr = new Date().toISOString().split('T')[0];
 
-      monthYear.textContent = `${new Date(year, month).toLocaleString('default', { month: 'long' })} ${year}`;
+      monthYear.textContent = ${new Date(year, month).toLocaleString('default', { month: 'long' })} ${year};
       calendarGrid.innerHTML = "";
 
       for (let i = 0; i < firstDay; i++) {
-        calendarGrid.innerHTML += `<div></div>`;
+        calendarGrid.innerHTML += <div></div>;
       }
 
       for (let day = 1; day <= totalDays; day++) {
-        const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+        const dateStr = ${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')};
         const isToday = dateStr === currentDateStr;
 
         calendarGrid.innerHTML += `
@@ -223,7 +136,7 @@
     function openModal(dateStr) {
       selectedDateStr = dateStr;
       modal.classList.remove("hidden");
-      modalDate.innerText = `Log for ${dateStr}`;
+      modalDate.innerText = Log for ${dateStr};
       moodInput.value = '';
       summaryInput.value = '';
 
@@ -249,7 +162,7 @@
       await db.collection("users").doc(userId).collection("logs").doc(selectedDateStr)
         .set({ mood, summary, timestamp: new Date() });
 
-      document.getElementById(`mood-${selectedDateStr}`).innerText = mood;
+      document.getElementById(mood-${selectedDateStr}).innerText = mood;
       closeModal();
     }
 
@@ -259,7 +172,7 @@
 
       snapshot.forEach(doc => {
         const data = doc.data();
-        const moodEl = document.getElementById(`mood-${doc.id}`);
+        const moodEl = document.getElementById(mood-${doc.id});
         if (moodEl) {
           moodEl.innerText = data.mood;
         }
