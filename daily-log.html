@@ -36,8 +36,74 @@
   <style>
     body {
       font-family: 'Quicksand', sans-serif;
+      background-image: url('https://www.toptal.com/designers/subtlepatterns/patterns/wood.png'); /* Wood texture for coffee table */
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center;
+      background-color: #8B5A2B; /* Backup color in case the image fails */
+      min-height: 100vh;
     }
-}
+
+    .coffee-cup {
+      width: 80px;
+      height: 80px;
+      background-color: #6F4F1F; /* Coffee color */
+      border-radius: 50%;
+      position: absolute;
+      top: 50%;
+      left: 10%;
+      transform: translate(-50%, -50%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    }
+
+    .coffee-cup::before {
+      content: "";
+      width: 50px;
+      height: 50px;
+      background-color: #D2B48C; /* Cup lid color */
+      border-radius: 50%;
+      position: absolute;
+      top: -20px;
+    }
+
+    .coffee-cup::after {
+      content: "";
+      width: 10px;
+      height: 20px;
+      background-color: #6F4F1F;
+      border-radius: 5px;
+      position: absolute;
+      top: -30px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .coffee-cup .steam {
+      position: absolute;
+      top: -30px;
+      left: 50%;
+      transform: translateX(-50%);
+      height: 10px;
+      width: 10px;
+      background-color: #fff;
+      border-radius: 50%;
+      animation: steam 1.5s infinite;
+    }
+
+    @keyframes steam {
+      0% {
+        transform: translateX(-50%) translateY(0);
+        opacity: 1;
+      }
+      100% {
+        transform: translateX(-50%) translateY(-15px);
+        opacity: 0;
+      }
+    }
+
   </style>
 </head>
 
@@ -46,6 +112,11 @@
   <div class="text-center mt-4">
     <h1 class="text-4xl font-bold">🪴 Daily Log</h1>
     <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Reflect gently. Log your day with love.</p>
+  </div>
+
+  <!-- Coffee cup moved to the left -->
+  <div class="coffee-cup">
+    <div class="steam"></div>
   </div>
 
   <!-- Document Today Button -->
@@ -113,15 +184,15 @@
       const totalDays = new Date(year, month + 1, 0).getDate();
       const currentDateStr = new Date().toISOString().split('T')[0];
 
-      monthYear.textContent = ${new Date(year, month).toLocaleString('default', { month: 'long' })} ${year};
+      monthYear.textContent = `${new Date(year, month).toLocaleString('default', { month: 'long' })} ${year}`;
       calendarGrid.innerHTML = "";
 
       for (let i = 0; i < firstDay; i++) {
-        calendarGrid.innerHTML += <div></div>;
+        calendarGrid.innerHTML += `<div></div>`;
       }
 
       for (let day = 1; day <= totalDays; day++) {
-        const dateStr = ${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')};
+        const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
         const isToday = dateStr === currentDateStr;
 
         calendarGrid.innerHTML += `
@@ -137,7 +208,7 @@
     function openModal(dateStr) {
       selectedDateStr = dateStr;
       modal.classList.remove("hidden");
-      modalDate.innerText = Log for ${dateStr};
+      modalDate.innerText = `Log for ${dateStr}`;
       moodInput.value = '';
       summaryInput.value = '';
 
@@ -163,7 +234,7 @@
       await db.collection("users").doc(userId).collection("logs").doc(selectedDateStr)
         .set({ mood, summary, timestamp: new Date() });
 
-      document.getElementById(mood-${selectedDateStr}).innerText = mood;
+      document.getElementById(`mood-${selectedDateStr}`).innerText = mood;
       closeModal();
     }
 
@@ -173,7 +244,7 @@
 
       snapshot.forEach(doc => {
         const data = doc.data();
-        const moodEl = document.getElementById(mood-${doc.id});
+        const moodEl = document.getElementById(`mood-${doc.id}`);
         if (moodEl) {
           moodEl.innerText = data.mood;
         }
