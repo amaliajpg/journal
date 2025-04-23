@@ -36,10 +36,12 @@
   <style>
     body {
       font-family: 'Quicksand', sans-serif;
-      background: #8B5A2B; /* Coffee table wood-like background */
+      background-image: url('https://www.toptal.com/designers/subtlepatterns/patterns/wood.png'); /* Wood texture for coffee table */
       background-size: cover;
       background-repeat: no-repeat;
       background-position: center;
+      background-color: #8B5A2B; /* Backup color in case the image fails */
+      min-height: 100vh;
     }
 
     .coffee-cup {
@@ -49,7 +51,7 @@
       border-radius: 50%;
       position: absolute;
       top: 50%;
-      left: 50%;
+      left: 10%;
       transform: translate(-50%, -50%);
       display: flex;
       justify-content: center;
@@ -112,7 +114,7 @@
     <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Reflect gently. Log your day with love.</p>
   </div>
 
-  <!-- Coffee cup placed at the center of the screen -->
+  <!-- Coffee cup moved to the left -->
   <div class="coffee-cup">
     <div class="steam"></div>
   </div>
@@ -211,75 +213,4 @@
       summaryInput.value = '';
 
       const userId = firebase.auth().currentUser.uid;
-      db.collection("users").doc(userId).collection("logs").doc(dateStr).get().then(doc => {
-        if (doc.exists) {
-          const data = doc.data();
-          moodInput.value = data.mood || '';
-          summaryInput.value = data.summary || '';
-        }
-      });
-    }
-
-    function closeModal() {
-      modal.classList.add("hidden");
-    }
-
-    async function saveLog() {
-      const mood = moodInput.value;
-      const summary = summaryInput.value;
-      const userId = firebase.auth().currentUser.uid;
-
-      await db.collection("users").doc(userId).collection("logs").doc(selectedDateStr)
-        .set({ mood, summary, timestamp: new Date() });
-
-      document.getElementById(`mood-${selectedDateStr}`).innerText = mood;
-      closeModal();
-    }
-
-    async function loadLogs() {
-      const userId = firebase.auth().currentUser.uid;
-      const snapshot = await db.collection("users").doc(userId).collection("logs").get();
-
-      snapshot.forEach(doc => {
-        const data = doc.data();
-        const moodEl = document.getElementById(`mood-${doc.id}`);
-        if (moodEl) {
-          moodEl.innerText = data.mood;
-        }
-      });
-    }
-
-    function prevMonth() {
-      currentMonth--;
-      if (currentMonth < 0) {
-        currentMonth = 11;
-        currentYear--;
-      }
-      renderCalendar(currentYear, currentMonth);
-      loadLogs();
-    }
-
-    function nextMonth() {
-      currentMonth++;
-      if (currentMonth > 11) {
-        currentMonth = 0;
-        currentYear++;
-      }
-      renderCalendar(currentYear, currentMonth);
-      loadLogs();
-    }
-
-    document.getElementById("documentToday").addEventListener("click", () => {
-      const todayStr = new Date().toISOString().split('T')[0];
-      openModal(todayStr);
-    });
-
-    firebase.auth().onAuthStateChanged(user => {
-      if (user) {
-        renderCalendar(currentYear, currentMonth);
-        loadLogs();
-      }
-    });
-  </script>
-</body>
-</html>
+      db.collection("users").doc(userId).collection("logs").doc(dateStr).get().
