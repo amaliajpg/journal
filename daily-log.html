@@ -150,26 +150,47 @@
       modal.classList.add("hidden");
     }
 
-    async function saveLog(button) {
-      const mood = moodInput.value;
-      const summary = summaryInput.value;
-      const userId = firebase.auth().currentUser.uid;
+ async function saveLog(button) {
+  try {
+    console.log("Trying to save log...");
 
-      // Generate a short, funny AI summary
-      const aiSummaryText = summary.split(' ').slice(0, 10).join(' ') + "... and it was epic!";
+    const mood = moodInput.value;
+    const summary = summaryInput.value;
+    const userId = firebase.auth().currentUser?.uid;
 
-      // Add a saving animation 
-      button.innerText = "Saving..."; button.disabled = true;
-        await db.collection("users").doc(userId).collection("logs").doc(selectedDateStr).set({
-    mood, summary, aiSummary: aiSummaryText
-  });
+    if (!userId) {
+      alert("User is not logged in!");
+      return;
+    }
 
-  // Reset button
-  button.innerText = "Save";
-  button.disabled = false;
+    const aiSummaryText = summary
+      ? summary.split(' ').slice(0, 10).join(' ') + "... and then I probably took a nap. 😴"
+      : "I did absolutely nothing and it was glorious. ✨";
 
-  document.getElementById(`mood-${selectedDateStr}`).innerText = mood;
-  closeModal();
+    button.innerText = "Saving...";
+    button.disabled = true;
+
+    await db.collection("users")
+      .doc(userId)
+      .collection("logs")
+      .doc(selectedDateStr)
+      .set({
+        mood: mood || "🙂",
+        summary: summary || "(no text)",
+        aiSummary: aiSummaryText
+      });
+
+    document.getElementById(`mood-${selectedDateStr}`).innerText = mood;
+    closeModal();
+
+    console.log("Saved successfully!");
+  } catch (err) {
+    console.error("Save failed:", err);
+    alert("Failed to save. Check console.");
+  } finally {
+    button.innerText = "Save";
+    button.disabled = false;
+  }
 }
 
 function prevMonth() {
