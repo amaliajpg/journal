@@ -17,9 +17,8 @@
             sans: ['Quicksand', 'sans-serif'],
           },
           colors: {
-            pastelgreen: '#cdeac0',
+            cozybrown: '#d2b48c',
             pastel: {
-              green: '#cdeac0',
               table: '#fef9f3',
             }
           }
@@ -34,15 +33,14 @@
   <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-auth-compat.js"></script>
 </head>
 
-<body class="bg-pastelgreen text-gray-900 dark:text-white min-h-screen flex flex-col items-center justify-start p-6 space-y-8">
-
+<body class="bg-cozybrown text-gray-900 dark:text-white min-h-screen flex flex-col items-center justify-start p-6 space-y-8">
   <div class="text-center mt-4">
     <h1 class="text-4xl font-bold">🪴 Daily Log</h1>
-    <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Reflect gently. Log your day with love.</p>
+    <p class="text-sm text-gray-700 dark:text-gray-300 mt-1">Reflect gently. Log your day with love.</p>
   </div>
 
   <!-- Document Today Button -->
-  <button id="documentToday" class="bg-white hover:bg-green-100 text-gray-800 font-semibold py-2 px-6 rounded-xl shadow transition transform hover:scale-105">
+  <button id="documentToday" class="bg-white hover:bg-gray-200 text-gray-800 font-semibold py-2 px-6 rounded-xl shadow transition transform hover:scale-105">
     ✍ Document Today
   </button>
 
@@ -54,7 +52,7 @@
       <button onclick="nextMonth()" class="text-xl px-3 py-1 rounded hover:bg-gray-200 dark:hover:bg-gray-700">→</button>
     </div>
 
-    <div class="grid grid-cols-7 text-center mb-2 text-gray-500 dark:text-gray-400 font-semibold">
+    <div class="grid grid-cols-7 text-center mb-2 text-gray-700 dark:text-gray-300 font-semibold">
       <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
     </div>
 
@@ -68,10 +66,10 @@
       <p id="modal-date" class="text-sm mb-4 text-gray-500"></p>
       <input id="mood" type="text" placeholder="Mood emoji 😊" class="w-full p-2 rounded border mb-2 dark:bg-gray-700 dark:border-gray-600">
       <textarea id="summary" placeholder="What happened today?" class="w-full p-2 rounded border mb-2 dark:bg-gray-700 dark:border-gray-600"></textarea>
-      <button onclick="generateAISummary()" class="mb-4 px-4 py-2 bg-blue-300 rounded-lg font-semibold">✨ AI Summary</button>
-      <div class="mt-4 flex justify-end space-x-2">
+      <textarea id="ai-summary" placeholder="AI Summary will appear here..." class="w-full p-2 rounded border mb-4 dark:bg-gray-700 dark:border-gray-600" readonly></textarea>
+      <div class="mt-4 flex justify-between">
         <button onclick="closeModal()" class="px-4 py-2 bg-gray-300 dark:bg-gray-600 rounded-lg">Cancel</button>
-        <button onclick="saveLog()" class="px-4 py-2 bg-green-400 rounded-lg font-semibold">Save</button>
+        <button onclick="saveLog(this)" class="px-4 py-2 bg-green-400 hover:bg-green-500 rounded-lg font-semibold transition-transform duration-200 active:scale-95">Save</button>
       </div>
     </div>
   </div>
@@ -95,6 +93,7 @@
     const modalDate = document.getElementById("modal-date");
     const moodInput = document.getElementById("mood");
     const summaryInput = document.getElementById("summary");
+    const aiSummary = document.getElementById("ai-summary");
     let selectedDateStr = null;
 
     const today = new Date();
@@ -106,11 +105,11 @@
       const totalDays = new Date(year, month + 1, 0).getDate();
       const currentDateStr = new Date().toISOString().split('T')[0];
 
-      monthYear.textContent = new Date(year, month).toLocaleString('default', { month: 'long' }) + ' ' + year;
+      monthYear.textContent = new Date(year, month).toLocaleString('default', { month: 'long', year: 'numeric' });
       calendarGrid.innerHTML = "";
 
       for (let i = 0; i < firstDay; i++) {
-        calendarGrid.innerHTML += '<div></div>';
+        calendarGrid.innerHTML += `<div></div>`;
       }
 
       for (let day = 1; day <= totalDays; day++) {
@@ -133,6 +132,7 @@
       modalDate.innerText = `Log for ${dateStr}`;
       moodInput.value = '';
       summaryInput.value = '';
+      aiSummary.value = '';
 
       const userId = firebase.auth().currentUser.uid;
       db.collection("users").doc(userId).collection("logs").doc(dateStr).get().then(doc => {
@@ -140,6 +140,7 @@
           const data = doc.data();
           moodInput.value = data.mood || '';
           summaryInput.value = data.summary || '';
+          aiSummary.value = data.aiSummary || '';
         }
       });
     }
@@ -148,13 +149,24 @@
       modal.classList.add("hidden");
     }
 
-    async function saveLog() {
+    async function saveLog(button) {
       const mood = moodInput.value;
       const summary = summaryInput.value;
       const userId = firebase.auth().currentUser.uid;
 
+      button.classList.add("scale-90");
+      setTimeout(() => button.classList.remove("scale-90"), 150);
+
+      const aiSummaryText = await fetch('/generate-summary', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ summary })
+      }).then(res => res.json()).then(data => data.summary);
+
+      aiSummary.value = aiSummaryText;
+
       await db.collection("users").doc(userId).collection("logs").doc(selectedDateStr)
-        .set({ mood, summary, timestamp: new Date() });
+        .set({ mood, summary, aiSummary: aiSummaryText, timestamp: new Date() });
 
       document.getElementById(`mood-${selectedDateStr}`).innerText = mood;
       closeModal();
@@ -191,14 +203,6 @@
       }
       renderCalendar(currentYear, currentMonth);
       loadLogs();
-    }
-
-    function generateAISummary() {
-      const text = summaryInput.value;
-      if (!text) return alert("Please enter your notes before using AI Summary.");
-
-      // Placeholder: In a real scenario, you'd call a server endpoint here
-      summaryInput.value = text + "\n\nAI Summary: You had a thoughtful day, reflecting deeply on your experiences.";
     }
 
     document.getElementById("documentToday").addEventListener("click", () => {
