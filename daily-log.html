@@ -34,7 +34,7 @@
   <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-auth-compat.js"></script>
 </head>
 
-<body class="bg-pastelgreen dark:bg-black text-gray-900 dark:text-white min-h-screen flex flex-col items-center justify-start p-6 space-y-8">
+<body class="bg-pastelgreen text-gray-900 dark:text-white min-h-screen flex flex-col items-center justify-start p-6 space-y-8">
 
   <div class="text-center mt-4">
     <h1 class="text-4xl font-bold">🪴 Daily Log</h1>
@@ -42,7 +42,7 @@
   </div>
 
   <!-- Document Today Button -->
-  <button id="documentToday" class="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-6 rounded-xl shadow transition transform hover:scale-105">
+  <button id="documentToday" class="bg-white hover:bg-green-100 text-gray-800 font-semibold py-2 px-6 rounded-xl shadow transition transform hover:scale-105">
     ✍ Document Today
   </button>
 
@@ -67,7 +67,8 @@
       <h2 class="text-xl font-bold mb-2">Log Entry</h2>
       <p id="modal-date" class="text-sm mb-4 text-gray-500"></p>
       <input id="mood" type="text" placeholder="Mood emoji 😊" class="w-full p-2 rounded border mb-2 dark:bg-gray-700 dark:border-gray-600">
-      <textarea id="summary" placeholder="What happened today?" class="w-full p-2 rounded border mb-4 dark:bg-gray-700 dark:border-gray-600"></textarea>
+      <textarea id="summary" placeholder="What happened today?" class="w-full p-2 rounded border mb-2 dark:bg-gray-700 dark:border-gray-600"></textarea>
+      <button onclick="generateAISummary()" class="mb-4 px-4 py-2 bg-blue-300 rounded-lg font-semibold">✨ AI Summary</button>
       <div class="mt-4 flex justify-end space-x-2">
         <button onclick="closeModal()" class="px-4 py-2 bg-gray-300 dark:bg-gray-600 rounded-lg">Cancel</button>
         <button onclick="saveLog()" class="px-4 py-2 bg-green-400 rounded-lg font-semibold">Save</button>
@@ -105,11 +106,11 @@
       const totalDays = new Date(year, month + 1, 0).getDate();
       const currentDateStr = new Date().toISOString().split('T')[0];
 
-      monthYear.textContent = `${new Date(year, month).toLocaleString('default', { month: 'long' })} ${year}`;
+      monthYear.textContent = new Date(year, month).toLocaleString('default', { month: 'long' }) + ' ' + year;
       calendarGrid.innerHTML = "";
 
       for (let i = 0; i < firstDay; i++) {
-        calendarGrid.innerHTML += `<div></div>`;
+        calendarGrid.innerHTML += '<div></div>';
       }
 
       for (let day = 1; day <= totalDays; day++) {
@@ -190,6 +191,14 @@
       }
       renderCalendar(currentYear, currentMonth);
       loadLogs();
+    }
+
+    function generateAISummary() {
+      const text = summaryInput.value;
+      if (!text) return alert("Please enter your notes before using AI Summary.");
+
+      // Placeholder: In a real scenario, you'd call a server endpoint here
+      summaryInput.value = text + "\n\nAI Summary: You had a thoughtful day, reflecting deeply on your experiences.";
     }
 
     document.getElementById("documentToday").addEventListener("click", () => {
