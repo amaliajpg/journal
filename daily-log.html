@@ -154,11 +154,11 @@
       const summary = summaryInput.value;
       const userId = firebase.auth().currentUser.uid;
 
+      // Generate AI summary in a fun and minimal way
+      const aiSummaryText = summary.split(' ').slice(0, 10).join(' ') + "... and it was epic!";
+
       button.classList.add("scale-90");
       setTimeout(() => button.classList.remove("scale-90"), 150);
-
-      // Generate funny AI Summary
-      const aiSummaryText = await generateAISummary(summary);
 
       aiSummary.value = aiSummaryText;
 
@@ -169,11 +169,17 @@
       closeModal();
     }
 
-    // Simulate AI funny and minimal summary generation
-    async function generateAISummary(text) {
-      // Simulated funny and minimal summary logic
-      const summary = text.split(' ').slice(0, 10).join(' ') + '... and it was epic!';
-      return summary;
+    async function loadLogs() {
+      const userId = firebase.auth().currentUser.uid;
+      const snapshot = await db.collection("users").doc(userId).collection("logs").get();
+
+      snapshot.forEach(doc => {
+        const data = doc.data();
+        const moodEl = document.getElementById(`mood-${doc.id}`);
+        if (moodEl) {
+          moodEl.innerText = data.mood;
+        }
+      });
     }
 
     function prevMonth() {
@@ -183,6 +189,7 @@
         currentYear--;
       }
       renderCalendar(currentYear, currentMonth);
+      loadLogs();
     }
 
     function nextMonth() {
@@ -192,6 +199,7 @@
         currentYear++;
       }
       renderCalendar(currentYear, currentMonth);
+      loadLogs();
     }
 
     document.getElementById("documentToday").addEventListener("click", () => {
@@ -202,6 +210,7 @@
     firebase.auth().onAuthStateChanged(user => {
       if (user) {
         renderCalendar(currentYear, currentMonth);
+        loadLogs();
       }
     });
   </script>
