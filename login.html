@@ -1,100 +1,13 @@
 <!DOCTYPE html>
 <html lang="en" class="dark">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Sign Up - Eunoia Seeds</title>
-
-  <!-- Google Fonts + Tailwind -->
-  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Eunoia Login</title>
   <script src="https://cdn.tailwindcss.com"></script>
-
-  <script>
-    tailwind.config = {
-      darkMode: 'media',
-      theme: {
-        extend: {
-          fontFamily: {
-            sans: ['Quicksand', 'sans-serif'],
-          },
-          colors: {
-            rose: {
-              DEFAULT: '#f472b6',
-              light: '#fce7f3',
-              dark: '#be185d'
-            }
-          },
-          animation: {
-            fadeIn: 'fadeIn 1s ease-in-out',
-            slideIn: 'slideIn 0.8s ease-out'
-          },
-          keyframes: {
-            fadeIn: {
-              '0%': { opacity: 0 },
-              '100%': { opacity: 1 }
-            },
-            slideIn: {
-              '0%': { opacity: 0, transform: 'translateY(20px)' },
-              '100%': { opacity: 1, transform: 'translateY(0)' }
-            }
-          }
-        }
-      }
-    }
-  </script>
-
-  <style>
-    html, body {
-      margin: 0;
-      padding: 0;
-    }
-    body {
-      background: url("download (13) (1).jpeg") no-repeat center center fixed;
-      background-size: cover;
-    }
-    .backdrop {
-      backdrop-filter: blur(10px);
-      background-color: rgba(0, 0, 0, 0.5); /* slightly darker */
-    }
-  </style>
-</head>
-<body class="font-sans flex items-center justify-center min-h-screen px-4 text-white">
-
-  <!-- Sign Up Card -->
-  <div class="backdrop rounded-3xl shadow-2xl max-w-md w-full p-8 space-y-6 animate-fadeIn">
-    <div class="flex flex-col items-center animate-slideIn">
-      <img src="download__12_-removebg-preview.png" alt="Logo" class="w-16 h-16 mb-3"/>
-      <h2 class="text-3xl font-bold text-white">Create Your Account</h2>
-      <p class="text-sm text-rose-200">Join the Eunoia journey ✨</p>
-    </div>
-
-    <form id="signupForm" class="space-y-5 animate-slideIn" onsubmit="signUp(event)">
-      <div>
-        <label for="email" class="block text-sm font-medium text-rose-100">Email</label>
-        <input type="email" id="email" required class="mt-1 w-full px-4 py-2 rounded-lg bg-white/90 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-rose-400" placeholder="you@example.com">
-      </div>
-
-      <div>
-        <label for="password" class="block text-sm font-medium text-rose-100">Password</label>
-        <input type="password" id="password" required class="mt-1 w-full px-4 py-2 rounded-lg bg-white/90 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-rose-400" placeholder="••••••••">
-      </div>
-
-      <div id="errorMsg" class="text-sm text-red-300 font-semibold hidden">Something went wrong</div>
-
-      <button type="submit" class="w-full py-2 bg-rose-400 hover:bg-rose-500 transition duration-300 rounded-lg text-white font-semibold shadow-lg">
-        Create Account
-      </button>
-    </form>
-
-    <p class="text-center text-sm text-rose-200">
-      Already have an account? <a href="login.html" class="text-rose-100 hover:text-white underline">Sign in</a>
-    </p>
-  </div>
-
-  <!-- Firebase SDK + Sign Up Script -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
-    import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
+    import { getAuth, signInWithEmailAndPassword, sendPasswordResetEmail, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyDW_0oWkmtrvWXJbSfzqEUDji4CZii78Xo",
@@ -108,23 +21,97 @@
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
 
-    window.signUp = async function(event) {
-      event.preventDefault();
+    window.addEventListener("DOMContentLoaded", () => {
+      const loginBtn = document.getElementById("loginBtn");
+      const forgotPasswordLink = document.getElementById("forgotPasswordLink");
 
-      const email = document.getElementById("email").value;
-      const password = document.getElementById("password").value;
-      const errorMsg = document.getElementById("errorMsg");
+      loginBtn.addEventListener("click", async () => {
+        const email = document.getElementById("email").value;
+        const password = document.getElementById("password").value;
+        try {
+          await signInWithEmailAndPassword(auth, email, password);
+          window.location.href = "dashboard.html";
+        } catch (error) {
+          alert("Login failed: " + error.message);
+        }
+      });
 
-      try {
-        await createUserWithEmailAndPassword(auth, email, password);
-        errorMsg.classList.add("hidden");
-        alert("🎉 Account created! Logging you in...");
-        window.location.href = "dashboard.html";
-      } catch (error) {
-        errorMsg.textContent = error.message;
-        errorMsg.classList.remove("hidden");
-      }
-    };
+      forgotPasswordLink.addEventListener("click", async (e) => {
+        e.preventDefault();
+        const email = document.getElementById("email").value;
+        if (!email) return alert("Please enter your email first.");
+        try {
+          await sendPasswordResetEmail(auth, email);
+          showToast("Password reset email sent!");
+        } catch (error) {
+          alert("Error: " + error.message);
+        }
+      });
+    });
+
+    function showToast(message) {
+      const toast = document.getElementById("toast");
+      const toastMessage = document.getElementById("toastMessage");
+      toastMessage.textContent = message;
+      toast.classList.remove("hidden");
+      setTimeout(() => toast.classList.add("hidden"), 3000);
+    }
   </script>
+
+  <style>
+    #loading-screen {
+      transition: opacity 0.5s ease;
+    }
+    #loading-screen.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-fadeIn {
+      animation: fadeIn 1s ease-out forwards;
+    }
+  </style>
+</head>
+<body class="bg-pink-100 text-pink-900 font-sans relative">
+
+<!-- Loading Screen -->
+<div id="loading-screen" class="fixed inset-0 bg-pink-300 flex items-center justify-center z-50">
+  <svg width="100" height="100" viewBox="0 0 100 100">
+    <circle cx="50" cy="50" r="45" stroke="#fff" stroke-width="10" fill="none" stroke-dasharray="283" stroke-dashoffset="75">
+      <animateTransform attributeName="transform" type="rotate" from="0 50 50" to="360 50 50" dur="1s" repeatCount="indefinite"/>
+    </circle>
+  </svg>
+</div>
+
+<!-- Main Container -->
+<div class="min-h-screen flex items-center justify-center">
+  <div class="bg-white/90 p-8 rounded-2xl shadow-2xl max-w-md w-full backdrop-blur-md animate-fadeIn">
+    <div class="flex justify-center mb-6">
+      <img src="pixel.jpeg" alt="Logo" class="w-20 h-20 rounded-full border-4 border-pink-500">
+    </div>
+    <h2 class="text-3xl font-bold text-center mb-4 text-pink-700">Welcome Back 🌸</h2>
+    <input id="email" type="email" placeholder="Email" class="w-full mb-3 p-3 border border-pink-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500">
+    <input id="password" type="password" placeholder="Password" class="w-full mb-4 p-3 border border-pink-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500">
+    <button id="loginBtn" class="w-full bg-pink-500 hover:bg-pink-600 text-white py-2 rounded-xl shadow transition duration-300">Login</button>
+    <p class="text-sm text-center text-pink-600 mt-4">
+      <a href="#" id="forgotPasswordLink" class="hover:underline">Forgot Password?</a>
+    </p>
+  </div>
+</div>
+
+<!-- Toast -->
+<div id="toast" class="fixed bottom-4 right-4 bg-pink-500 text-white px-4 py-2 rounded shadow-lg hidden">
+  <span id="toastMessage"></span>
+</div>
+
+<script>
+  window.addEventListener('load', () => {
+    const loadingScreen = document.getElementById('loading-screen');
+    loadingScreen.classList.add('hidden');
+  });
+</script>
 </body>
 </html>
