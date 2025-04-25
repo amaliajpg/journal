@@ -17,10 +17,10 @@
             sans: ['Quicksand', 'sans-serif'],
           },
           colors: {
-            rose: {
-              light: '#fce7f3',
-              DEFAULT: '#f472b6',
-              dark: '#be185d',
+            blue: {
+              light: '#A7D8E9',
+              DEFAULT: '#3E7CB1',  // Ocean blue
+              dark: '#2C5D7B',      // Deep blue
             },
             blush: '#ffccd5',
           },
@@ -45,7 +45,7 @@
 
   <style>
     body {
-      background: url("download (13) (1).jpeg") no-repeat center center fixed;
+      background: url("download (15) (1).jpeg") no-repeat center center fixed;
       background-size: cover;
     }
 
@@ -59,15 +59,15 @@
 
   <!-- Account Button Top Left -->
   <div class="absolute top-4 left-4 z-20">
-    <button id="accountBtn" class="flex items-center space-x-2 bg-rose-400 hover:bg-rose-500 transition px-4 py-2 rounded-xl shadow-lg">
-      <img src="pixel.jpeg" class="w-6 h-6 rounded-full object-cover" alt="Pixel Icon" />
+    <button id="accountBtn" class="flex items-center space-x-2 bg-blue-500 hover:bg-blue-600 transition px-4 py-2 rounded-xl shadow-lg">
+      <img src="pixel.jpeg" class="w-10 h-10 rounded-full object-cover" alt="Pixel Icon" /> <!-- Icon size increased -->
       <span class="text-sm font-semibold">My Account</span>
     </button>
   </div>
 
   <!-- Back Button -->
   <div class="absolute top-4 right-4 z-20">
-    <a href="index.html" class="flex items-center space-x-2 bg-rose-400 hover:bg-rose-500 transition px-4 py-2 rounded-xl shadow-lg">
+    <a href="index.html" class="flex items-center space-x-2 bg-blue-500 hover:bg-blue-600 transition px-4 py-2 rounded-xl shadow-lg">
       <span class="text-sm font-semibold">Back</span>
     </a>
   </div>
@@ -77,27 +77,27 @@
     <div class="backdrop p-10 rounded-3xl shadow-2xl max-w-md w-full space-y-6 text-center animate-slideUp">
       
       <div class="flex flex-col items-center space-y-3">
-        <img src="pixel.jpeg" alt="Profile" class="w-16 h-16 rounded-full shadow-md border-2 border-white animate-fadeIn"/>
-        <h1 class="text-3xl font-bold text-blush animate-fadeIn">Welcome to Your Garden 🌸</h1>
-        <p id="userEmail" class="text-pink-200 text-sm animate-fadeIn">Loading...</p>
+        <img src="pixel.jpeg" alt="Profile" class="w-24 h-24 rounded-full shadow-md border-2 border-white animate-fadeIn"/> <!-- Icon size increased -->
+        <h1 class="text-3xl font-bold text-blue-200 animate-fadeIn">Welcome to Your Garden 🌸</h1>
+        <p id="userEmail" class="text-blue-100 text-sm animate-fadeIn">Loading...</p>
       </div>
 
       <div class="space-y-4 animate-slideUp">
-        <a href="daily-log.html" class="block w-full bg-rose-300 hover:bg-rose-400 text-white font-semibold py-2 rounded-xl transition shadow-md">✍ Daily Log</a>
-        <a href="mood-tracker.html" class="block w-full bg-rose-300 hover:bg-rose-400 text-white font-semibold py-2 rounded-xl transition shadow-md">😊 Mood Tracker</a>
-        <a href="reflections.html" class="block w-full bg-rose-300 hover:bg-rose-400 text-white font-semibold py-2 rounded-xl transition shadow-md">🪞 Reflections</a>
-        <a href="planning.html" class="block w-full bg-rose-300 hover:bg-rose-400 text-white font-semibold py-2 rounded-xl transition shadow-md">📅 Planning</a>
+        <a href="daily-log.html" class="block w-full bg-blue-400 hover:bg-blue-500 text-white font-semibold py-2 rounded-xl transition shadow-md">✍ Daily Log</a>
+        <a href="mood-tracker.html" class="block w-full bg-blue-400 hover:bg-blue-500 text-white font-semibold py-2 rounded-xl transition shadow-md">😊 Mood Tracker</a>
+        <a href="reflections.html" class="block w-full bg-blue-400 hover:bg-blue-500 text-white font-semibold py-2 rounded-xl transition shadow-md">🪞 Reflections</a>
+        <a href="planning.html" class="block w-full bg-blue-400 hover:bg-blue-500 text-white font-semibold py-2 rounded-xl transition shadow-md">📅 Planning</a>
       </div>
 
       <!-- Settings Section -->
       <div class="space-y-4 mt-6 animate-slideUp">
-        <h2 class="text-xl font-semibold text-rose-500">Account Settings</h2>
-        <a href="update-email.html" class="block w-full bg-rose-300 hover:bg-rose-400 text-white font-semibold py-2 rounded-xl transition shadow-md">🔑 Update Email</a>
-        <a href="update-password.html" class="block w-full bg-rose-300 hover:bg-rose-400 text-white font-semibold py-2 rounded-xl transition shadow-md">🔒 Update Password</a>
-        <a href="delete-account.html" class="block w-full bg-rose-300 hover:bg-rose-400 text-white font-semibold py-2 rounded-xl transition shadow-md">❌ Delete Account</a>
+        <h2 class="text-xl font-semibold text-blue-300">Account Settings</h2>
+        <a href="update-email.html" class="block w-full bg-blue-400 hover:bg-blue-500 text-white font-semibold py-2 rounded-xl transition shadow-md">🔑 Update Email</a>
+        <a href="update-password.html" class="block w-full bg-blue-400 hover:bg-blue-500 text-white font-semibold py-2 rounded-xl transition shadow-md">🔒 Update Password</a>
+        <a href="delete-account.html" class="block w-full bg-blue-400 hover:bg-blue-500 text-white font-semibold py-2 rounded-xl transition shadow-md">❌ Delete Account</a>
       </div>
 
-      <button onclick="logout()" class="mt-6 w-full py-2 bg-white text-rose-500 hover:bg-rose-100 rounded-lg font-semibold shadow-md transition animate-fadeIn">
+      <button onclick="logout()" class="mt-6 w-full py-2 bg-white text-blue-500 hover:bg-blue-100 rounded-lg font-semibold shadow-md transition animate-fadeIn">
         Logout
       </button>
     </div>
