@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dashboard - Eunoia Seeds</title>
+
+  <!-- Tailwind + Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'media',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Quicksand', 'sans-serif'],
+          },
+          colors: {
+            rose: {
+              light: '#fce7f3',
+              DEFAULT: '#f472b6',
+              dark: '#be185d',
+            },
+            blush: '#ffccd5',
+          },
+          animation: {
+            fadeIn: 'fadeIn 1s ease-out forwards',
+            slideUp: 'slideUp 1s ease-out forwards'
+          },
+          keyframes: {
+            fadeIn: {
+              '0%': { opacity: 0 },
+              '100%': { opacity: 1 }
+            },
+            slideUp: {
+              '0%': { transform: 'translateY(40px)', opacity: 0 },
+              '100%': { transform: 'translateY(0)', opacity: 1 }
+            }
+          }
+        }
+      }
+    };
+  </script>
+
+  <style>
+    body {
+      background: url("download (13) (1).jpeg") no-repeat center center fixed;
+      background-size: cover;
+    }
+
+    .backdrop {
+      backdrop-filter: blur(12px);
+      background-color: rgba(0, 0, 0, 0.5);
+    }
+  </style>
+</head>
+<body class="font-sans min-h-screen text-white relative">
+
+  <!-- Account Button Top Left -->
+  <div class="absolute top-4 left-4 z-20">
+    <button id="accountBtn" class="flex items-center space-x-2 bg-rose-400 hover:bg-rose-500 transition px-4 py-2 rounded-xl shadow-lg">
+      <img src="pixel.jpeg" class="w-6 h-6 rounded-full object-cover" alt="Pixel Icon" />
+      <span class="text-sm font-semibold">My Account</span>
+    </button>
+  </div>
+
+  <!-- Dashboard Main -->
+  <div class="flex items-center justify-center min-h-screen px-4">
+    <div class="backdrop p-10 rounded-3xl shadow-2xl max-w-md w-full space-y-6 text-center animate-slideUp">
+      
+      <div class="flex flex-col items-center space-y-3">
+        <img src="pixel.jpeg" alt="Profile" class="w-16 h-16 rounded-full shadow-md border-2 border-white animate-fadeIn"/>
+        <h1 class="text-3xl font-bold text-blush animate-fadeIn">Welcome to Your Garden 🌸</h1>
+        <p id="userEmail" class="text-pink-200 text-sm animate-fadeIn">Loading...</p>
+      </div>
+
+      <div class="space-y-4 animate-slideUp">
+        <a href="daily-log.html" class="block w-full bg-rose-300 hover:bg-rose-400 text-white font-semibold py-2 rounded-xl transition shadow-md">✍ Daily Log</a>
+        <a href="mood-tracker.html" class="block w-full bg-rose-300 hover:bg-rose-400 text-white font-semibold py-2 rounded-xl transition shadow-md">😊 Mood Tracker</a>
+        <a href="reflections.html" class="block w-full bg-rose-300 hover:bg-rose-400 text-white font-semibold py-2 rounded-xl transition shadow-md">🪞 Reflections</a>
+        <a href="planning.html" class="block w-full bg-rose-300 hover:bg-rose-400 text-white font-semibold py-2 rounded-xl transition shadow-md">📅 Planning</a>
+      </div>
+
+      <button onclick="logout()" class="mt-6 w-full py-2 bg-white text-rose-500 hover:bg-rose-100 rounded-lg font-semibold shadow-md transition animate-fadeIn">
+        Logout
+      </button>
+    </div>
+  </div>
+
+  <!-- Firebase Auth -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDW_0oWkmtrvWXJbSfzqEUDji4CZii78Xo",
+      authDomain: "eunoia-daily-log.firebaseapp.com",
+      projectId: "eunoia-daily-log",
+      storageBucket: "eunoia-daily-log.appspot.com",
+      messagingSenderId: "48245889100",
+      appId: "1:48245889100:web:07106c2ed00522a6e2bce9"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    onAuthStateChanged(auth, user => {
+      if (user) {
+        document.getElementById('userEmail').textContent = user.email || "Anonymous";
+      } else {
+        window.location.href = "login.html";
+      }
+    });
+
+    window.logout = async function () {
+      await signOut(auth);
+      window.location.href = "login.html";
+    };
+  </script>
+</body>
+</html>
