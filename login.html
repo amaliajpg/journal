@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Login - Eunoia Seeds</title>
+  <title>Login & Sign Up - Eunoia Seeds</title>
 
   <!-- Google Fonts + Tailwind -->
   <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
@@ -60,15 +60,16 @@
 </head>
 <body class="font-sans flex items-center justify-center min-h-screen px-4 text-white">
 
-  <!-- Login Card -->
+  <!-- Login/Sign Up Card -->
   <div class="backdrop rounded-3xl shadow-2xl max-w-md w-full p-8 space-y-6 animate-fadeIn">
     <div class="flex flex-col items-center animate-slideIn">
       <img src="download__12_-removebg-preview.png" alt="Logo" class="w-16 h-16 mb-3"/>
-      <h2 class="text-3xl font-bold text-white">Log in to Your Account</h2>
-      <p class="text-sm text-rose-200">Welcome back to Eunoia ✨</p>
+      <h2 id="formTitle" class="text-3xl font-bold text-white">Log in to Your Account</h2>
+      <p id="formSubTitle" class="text-sm text-rose-200">Welcome back to Eunoia ✨</p>
     </div>
 
-    <form id="loginForm" class="space-y-5 animate-slideIn" onsubmit="login(event)">
+    <!-- Form -->
+    <form id="authForm" class="space-y-5 animate-slideIn" onsubmit="handleAuth(event)">
       <div>
         <label for="email" class="block text-sm font-medium text-rose-100">Email</label>
         <input type="email" id="email" required class="mt-1 w-full px-4 py-2 rounded-lg bg-white/90 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-rose-400" placeholder="you@example.com">
@@ -81,20 +82,21 @@
 
       <div id="errorMsg" class="text-sm text-red-300 font-semibold hidden">Something went wrong</div>
 
-      <button type="submit" class="w-full py-2 bg-rose-400 hover:bg-rose-500 transition duration-300 rounded-lg text-white font-semibold shadow-lg">
+      <!-- Buttons -->
+      <button type="submit" id="submitBtn" class="w-full py-2 bg-rose-400 hover:bg-rose-500 transition duration-300 rounded-lg text-white font-semibold shadow-lg">
         Log in
       </button>
     </form>
 
     <p class="text-center text-sm text-rose-200">
-      Don't have an account? <a href="signup.html" class="text-rose-100 hover:text-white underline">Sign up</a>
+      <span id="toggleText">Don't have an account? <a href="javascript:void(0);" id="toggleLink" class="text-rose-100 hover:text-white underline">Sign up</a></span>
     </p>
   </div>
 
-  <!-- Firebase SDK + Login Script -->
+  <!-- Firebase SDK + Authentication Script -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
-    import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
+    import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyDW_0oWkmtrvWXJbSfzqEUDji4CZii78Xo",
@@ -108,7 +110,35 @@
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
 
-    window.login = async function(event) {
+    // Toggle between login and signup forms
+    let isSignUp = false;
+
+    document.getElementById('toggleLink').addEventListener('click', () => {
+      isSignUp = !isSignUp;
+      toggleForm();
+    });
+
+    function toggleForm() {
+      const formTitle = document.getElementById('formTitle');
+      const formSubTitle = document.getElementById('formSubTitle');
+      const submitBtn = document.getElementById('submitBtn');
+      const toggleText = document.getElementById('toggleText');
+
+      if (isSignUp) {
+        formTitle.textContent = "Create Your Account";
+        formSubTitle.textContent = "Join Eunoia ✨";
+        submitBtn.textContent = "Sign Up";
+        toggleText.innerHTML = 'Already have an account? <a href="javascript:void(0);" id="toggleLink" class="text-rose-100 hover:text-white underline">Log in</a>';
+      } else {
+        formTitle.textContent = "Log in to Your Account";
+        formSubTitle.textContent = "Welcome back to Eunoia ✨";
+        submitBtn.textContent = "Log in";
+        toggleText.innerHTML = 'Don\'t have an account? <a href="javascript:void(0);" id="toggleLink" class="text-rose-100 hover:text-white underline">Sign up</a>';
+      }
+    }
+
+    // Handle Login/Sign Up action
+    window.handleAuth = async function(event) {
       event.preventDefault();
 
       const email = document.getElementById("email").value;
@@ -116,10 +146,18 @@
       const errorMsg = document.getElementById("errorMsg");
 
       try {
-        await signInWithEmailAndPassword(auth, email, password);
+        if (isSignUp) {
+          // Sign Up
+          await createUserWithEmailAndPassword(auth, email, password);
+          alert("🎉 Sign up successful! Redirecting...");
+          window.location.href = "dashboard.html"; // redirect after successful sign-up
+        } else {
+          // Login
+          await signInWithEmailAndPassword(auth, email, password);
+          alert("🎉 Login successful! Redirecting...");
+          window.location.href = "dashboard.html"; // redirect after successful login
+        }
         errorMsg.classList.add("hidden");
-        alert("🎉 Login successful! Redirecting...");
-        window.location.href = "dashboard.html"; // redirect to dashboard or another page after successful login
       } catch (error) {
         errorMsg.textContent = error.message;
         errorMsg.classList.remove("hidden");
