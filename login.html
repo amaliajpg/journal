@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login - Eunoia Seeds</title>
+
+  <!-- Google Fonts + Tailwind -->
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <script>
+    tailwind.config = {
+      darkMode: 'media',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Quicksand', 'sans-serif'],
+          },
+          colors: {
+            rose: {
+              DEFAULT: '#f472b6',
+              light: '#fce7f3',
+              dark: '#be185d'
+            }
+          },
+          animation: {
+            fadeIn: 'fadeIn 1s ease-in-out',
+            slideIn: 'slideIn 0.8s ease-out'
+          },
+          keyframes: {
+            fadeIn: {
+              '0%': { opacity: 0 },
+              '100%': { opacity: 1 }
+            },
+            slideIn: {
+              '0%': { opacity: 0, transform: 'translateY(20px)' },
+              '100%': { opacity: 1, transform: 'translateY(0)' }
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: url("download (13) (1).jpeg") no-repeat center center fixed;
+      background-size: cover;
+    }
+
+    .backdrop {
+      backdrop-filter: blur(8px);
+      background-color: rgba(255, 255, 255, 0.2);
+    }
+  </style>
+</head>
+<body class="font-sans flex items-center justify-center min-h-screen px-4 text-white">
+
+  <!-- Login Card -->
+  <div class="backdrop rounded-3xl shadow-2xl max-w-md w-full p-8 space-y-6 animate-fadeIn">
+    <div class="flex flex-col items-center animate-slideIn">
+      <img src="download__12_-removebg-preview.png" alt="Logo" class="w-16 h-16 mb-3"/>
+      <h2 class="text-3xl font-bold text-white">Welcome Back</h2>
+      <p class="text-sm text-rose-100">Sign in to continue your journey</p>
+    </div>
+
+    <form id="loginForm" class="space-y-5 animate-slideIn">
+      <div>
+        <label for="email" class="block text-sm font-medium text-rose-200">Email</label>
+        <input type="email" id="email" required class="mt-1 w-full px-4 py-2 rounded-lg bg-white/80 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-rose-400" placeholder="you@example.com">
+      </div>
+
+      <div>
+        <label for="password" class="block text-sm font-medium text-rose-200">Password</label>
+        <input type="password" id="password" required class="mt-1 w-full px-4 py-2 rounded-lg bg-white/80 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-rose-400" placeholder="••••••••">
+      </div>
+
+      <div id="errorMsg" class="text-sm text-red-300 font-semibold hidden">Invalid email or password</div>
+
+      <button type="submit" class="w-full py-2 bg-rose-400 hover:bg-rose-500 transition duration-300 rounded-lg text-white font-semibold shadow-lg">
+        Sign In
+      </button>
+    </form>
+
+    <p class="text-center text-sm text-rose-100">
+      New here? <a href="#" class="text-rose-200 hover:text-white underline">Create an account</a>
+    </p>
+  </div>
+
+  <!-- Fake JS Login Handler -->
+  <script>
+    document.getElementById("loginForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+      const errorMsg = document.getElementById("errorMsg");
+
+      // Fake check - you can replace this with backend logic
+      if (email === "test@example.com" && password === "123456") {
+        errorMsg.classList.add("hidden");
+        alert("Login successful! 🎉 Redirecting...");
+        // You can redirect here
+        window.location.href = "dashboard.html";
+      } else {
+        errorMsg.classList.remove("hidden");
+      }
+    });
+  </script>
+
+</body>
+</html>
